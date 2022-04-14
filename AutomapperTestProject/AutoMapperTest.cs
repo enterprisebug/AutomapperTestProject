@@ -1,7 +1,7 @@
 using AutoMapper;
-using AutomapperTestProject.Entities;
-using AutomapperTestProject.Models;
-using AutomapperTestProject.Profiles;
+using AutomapperTestProject.Unflattening.Entities;
+using AutomapperTestProject.Unflattening.Models;
+using AutomapperTestProject.Unflattening.Profiles;
 using Xunit;
 
 namespace AutomapperTestProject;
@@ -9,7 +9,7 @@ namespace AutomapperTestProject;
 public class AutoMapperTest
 {
     [Fact]
-    public void Ensure_Configs_Valid()
+    public void Ensure_Unflattening()
     {
         // Arrange
         var projectSpecificFactor = new ProjectSpecificFactor
@@ -30,22 +30,23 @@ public class AutoMapperTest
             }
         };
 
-        var projectSpecificFactorModel = new ProjectSpecificFactorModel
-        {
-            DiscountFactor = new DiscountFactorModel
-            {
-                DiscountSpecificFactor = new DiscountSpecificFactorModel
-                {
-                    Periphery = 4
-                },
-                DiscountPreventiveMaintenanceFactor = new DiscountPreventiveMaintenanceFactorModel
-                {
-                    Labor = 5
-                }
-            }
-        };
+        // Target Structure
+        //var projectSpecificFactorModel = new ProjectSpecificFactorModel
+        //{
+        //    DiscountFactor = new DiscountFactorModel
+        //    {
+        //        DiscountSpecificFactor = new DiscountSpecificFactorModel
+        //        {
+        //            Periphery = 4
+        //        },
+        //        DiscountPreventiveMaintenanceFactor = new DiscountPreventiveMaintenanceFactorModel
+        //        {
+        //            Labor = 5
+        //        }
+        //    }
+        //};
 
-        var configuration = new MapperConfiguration(x => x.AddProfile<MappingProfile>());
+        var configuration = new MapperConfiguration(x => x.AddProfile<UnflatteningMappingProfile>());
         configuration.AssertConfigurationIsValid();
         var mapper = configuration.CreateMapper();
 

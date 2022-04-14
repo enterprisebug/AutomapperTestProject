@@ -1,4 +1,4 @@
-namespace AutomapperTestProject.Entities;
+namespace AutomapperTestProject.Unflattening.Entities;
 
 public class DiscountPreventiveMaintenanceFactor
 {
