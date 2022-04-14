@@ -12,14 +12,35 @@ public class AutoMapperTest
     public void Ensure_Configs_Valid()
     {
         // Arrange
-        var source = new ProjectSpecificFactor
+        var projectSpecificFactor = new ProjectSpecificFactor
         {
             DiscountFactor = new DiscountFactor
             {
-                Periphery = new Percentage { Value = 4 },
+                Periphery = new Percentage
+                {
+                    Value = 4
+                },
                 DiscountPreventiveMaintenanceFactor = new DiscountPreventiveMaintenanceFactor
                 {
-                    Labor = new Percentage { Value = 5 }
+                    Labor = new Percentage
+                    {
+                        Value = 5
+                    }
+                }
+            }
+        };
+
+        var projectSpecificFactorModel = new ProjectSpecificFactorModel
+        {
+            DiscountFactor = new DiscountFactorModel
+            {
+                DiscountSpecificFactor = new DiscountSpecificFactorModel
+                {
+                    Periphery = 4
+                },
+                DiscountPreventiveMaintenanceFactor = new DiscountPreventiveMaintenanceFactorModel
+                {
+                    Labor = 5
                 }
             }
         };
@@ -29,7 +50,7 @@ public class AutoMapperTest
         var mapper = configuration.CreateMapper();
 
         // Act
-        var actual = mapper.Map<ProjectSpecificFactorModel>(source);
+        var actual = mapper.Map<ProjectSpecificFactorModel>(projectSpecificFactor);
 
         // Assert
         Assert.Equal(4, actual.DiscountFactor!.DiscountSpecificFactor.Periphery);
