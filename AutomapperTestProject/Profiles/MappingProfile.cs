@@ -10,6 +10,7 @@ public class MappingProfile : Profile
     {
         CreateMap<Percentage, decimal>().ConvertUsing(x => x.Value);
         CreateMap<ProjectSpecificFactor, ProjectSpecificFactorModel>();
+        CreateMap<DiscountFactor, DiscountFactorModel>();
         CreateMap<DiscountPreventiveMaintenanceFactor, DiscountPreventiveMaintenanceFactorModel>();
     }
 }
