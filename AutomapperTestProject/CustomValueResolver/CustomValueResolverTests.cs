@@ -1,59 +1,38 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using AutoMapper;
 using AutomapperTestProject.CustomValueResolver.Entities;
 using AutomapperTestProject.CustomValueResolver.Models;
 using AutomapperTestProject.CustomValueResolver.Profiles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace AutomapperTestProject.CustomValueResolver
+namespace AutomapperTestProject.CustomValueResolver;
+
+public record MyKeyValuePair(int Id, string Name);
+
+public class CustomValueResolverTests
 {
-    public class MyKeyValuePair {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class CustomValueResolverTests
+    [Fact]
+    public void Ensure_MyCustomValueResolver()
     {
-        [Fact]
-        public void Do()
+        // Arrange
+        var configuration = new MapperConfiguration(x => x.AddProfile<MyCustomValueResolverProfile>());
+        configuration.AssertConfigurationIsValid();
+        var mapper = configuration.CreateMapper();
+
+        var myKeyValuePairs = new List<MyKeyValuePair>
         {
-            // Arrange
-            var configuration = new MapperConfiguration(x => x.AddProfile<MyCustomValueResolverProfile>());
-            configuration.AssertConfigurationIsValid();
-            var mapper = configuration.CreateMapper();
+            new(1, "Herp"), new(2, "Derp")
+        };
 
-            var myList = new List<MyKeyValuePair>
-            {
-                new MyKeyValuePair { Id = 1, Name = "Herp" },
-                new MyKeyValuePair { Id = 2, Name = "Derp" },
-            };
-
-            var source = new Source
-            {
-                Id = 2
-            };
-
-            // Act
-            var result = mapper.Map<Destination>(source, myList);
-
-            // Assert
-            Assert.Equal("Derp", result.Name);
-        }
-    }
-
-    public static class AutoMapperExtensions
-    {
-        public static Destination Map<Destination>(
-            this IMapper map,
-            Source src,
-            List<MyKeyValuePair> keyValuePairs
-        )
+        var source = new Source
         {
-            return map.Map<Destination>(src, opts => opts.Items["KeyValuePairs"] = keyValuePairs);
-        }
+            Id = 2
+        };
+
+        // Act
+        var result = mapper.Map<Destination>(source, myKeyValuePairs);
+
+        // Assert
+        Assert.Equal("Derp", result.Name);
     }
 }

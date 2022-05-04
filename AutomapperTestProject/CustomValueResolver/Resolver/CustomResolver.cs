@@ -1,26 +1,21 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using AutomapperTestProject.CustomValueResolver.Entities;
 using AutomapperTestProject.CustomValueResolver.Models;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace AutomapperTestProject.CustomValueResolver.Resolver
+namespace AutomapperTestProject.CustomValueResolver.Resolver;
+
+public class CustomResolver : IValueResolver<Source, Destination, string>
 {
-    public class CustomResolver : IValueResolver<Source, Destination, string>
-	{
-		public string Resolve(Source source, Destination destination, string member, ResolutionContext context)
-		{
-			var myKeyValuePairList = context.Items["KeyValuePairs"] as List<MyKeyValuePair>;
+    public string Resolve(Source source, Destination destination, string member, ResolutionContext context)
+    {
+        if (context.Items["KeyValuePairs"] is List<MyKeyValuePair> myKeyValuePairList)
+        {
+            var existingValue = myKeyValuePairList.FirstOrDefault(x => x.Id == source.Id);
+            return existingValue != null ? existingValue.Name : $"Unknown Pair ({source.Id})";
+        }
 
-			if (myKeyValuePairList != null) {
-				var existingValue = myKeyValuePairList.FirstOrDefault(x => x.Id == source.Id);
-				if (existingValue != null)
-				{
-					return myKeyValuePairList.First(x => x.Id == source.Id).Name;
-				}
-				return $"Unknown Pair ({source.Id})";
-			}
-			return $"Unknown Pair ({source.Id})";
-		}
-	}
+        return $"Unknown Pair ({source.Id})";
+    }
 }

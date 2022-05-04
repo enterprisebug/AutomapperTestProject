@@ -4,9 +4,9 @@ using AutomapperTestProject.Unflattening.Models;
 using AutomapperTestProject.Unflattening.Profiles;
 using Xunit;
 
-namespace AutomapperTestProject;
+namespace AutomapperTestProject.Unflattening;
 
-public class AutoMapperTest
+public class UnflatteningTests
 {
     [Fact]
     public void Ensure_Unflattening()
