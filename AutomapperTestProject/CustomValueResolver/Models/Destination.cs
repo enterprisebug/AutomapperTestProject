@@ -2,6 +2,6 @@
 {
     public class Destination
     {
-        public int Total { get; set; }
+        public string Name { get; set; }
     }
 }

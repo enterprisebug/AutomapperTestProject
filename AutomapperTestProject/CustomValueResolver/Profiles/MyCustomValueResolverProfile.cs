@@ -10,7 +10,7 @@ namespace AutomapperTestProject.CustomValueResolver.Profiles
         public MyCustomValueResolverProfile()
         {
             CreateMap<Source, Destination>()
-                .ForMember(dest => dest.Total, opt => opt.MapFrom<CustomResolver>());
+                .ForMember(dest => dest.Name, opt => opt.MapFrom<CustomResolver>());
         }
     }
 }

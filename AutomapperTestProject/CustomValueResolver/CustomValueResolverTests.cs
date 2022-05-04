@@ -11,6 +11,11 @@ using Xunit;
 
 namespace AutomapperTestProject.CustomValueResolver
 {
+    public class MyKeyValuePair {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class CustomValueResolverTests
     {
         [Fact]
@@ -21,17 +26,34 @@ namespace AutomapperTestProject.CustomValueResolver
             configuration.AssertConfigurationIsValid();
             var mapper = configuration.CreateMapper();
 
+            var myList = new List<MyKeyValuePair>
+            {
+                new MyKeyValuePair { Id = 1, Name = "Herp" },
+                new MyKeyValuePair { Id = 2, Name = "Derp" },
+            };
+
             var source = new Source
             {
-                Value1 = 5,
-                Value2 = 7
+                Id = 2
             };
 
             // Act
-            var result = mapper.Map<Source, Destination>(source);
+            var result = mapper.Map<Destination>(source, myList);
 
             // Assert
-            Assert.Equal(12, result.Total);
+            Assert.Equal("Derp", result.Name);
+        }
+    }
+
+    public static class AutoMapperExtensions
+    {
+        public static Destination Map<Destination>(
+            this IMapper map,
+            Source src,
+            List<MyKeyValuePair> keyValuePairs
+        )
+        {
+            return map.Map<Destination>(src, opts => opts.Items["KeyValuePairs"] = keyValuePairs);
         }
     }
 }
